@@ -1,0 +1,20 @@
+package boss.iboss;
+
+/*
+ *
+ *
+ * @author HM
+ */
+import player.Player;
+
+public interface IBossDie {
+
+    void doSomeThing(Player playerKill);
+
+    void notifyDie(Player playerKill);
+
+    void rewards(Player playerKill);
+
+    void leaveMap();
+
+}
