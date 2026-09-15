@@ -14,6 +14,7 @@
  Date: 09/09/2026 10:34:27
 */
 
+use nrosocap;
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

@@ -133,6 +133,8 @@ public class SQLHandle {
                             if ((player = loadPlayer(rs, false)) != null) {
                                 player.isPlayer = true;
                                 player.deltaTime = deltaTime;
+                                player.baseName = player.name;
+                                player.updateIdSpinePlayer();
                                 player.isNewMember = !Util.isTimeDifferenceGreaterThanNDays(createTime, 45);
                                 player.charms.adjustCharmTimes(offlineDuration);
                                 DBConnecter.executeUpdate("update account set last_time_login = '" + new Timestamp(System.currentTimeMillis()) + "', ip_address = '" + session.ipAddress + "' where id = " + session.userId);

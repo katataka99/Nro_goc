@@ -584,7 +584,7 @@ public void load_Me_To_Another(Player player) {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        Service.gI().sendInfoSpine(plReceive, plInfo);
         Service.gI().sendFlagPlayerToMe(plReceive, plInfo);
 
         try {

@@ -369,6 +369,9 @@ public class InventoryService {
             Service.gI().point(player);
             Service.gI().Send_Caitrang(player);
             Service.gI().sendFlagBag(player);
+            if (index == 5) {
+                Service.gI().sendInfoSpine(player, player);
+            }
         }
     }
 
@@ -395,6 +398,9 @@ public class InventoryService {
                 if (item.isNotNullItem()) {
                     Service.gI().removeEffPlayer(player, item.template.part);
                 }
+            }
+            if (index == 5) {
+                Service.gI().sendInfoSpine(player, player);
             }
             Service.gI().point(player);
             Service.gI().Send_Caitrang(player);

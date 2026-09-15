@@ -1190,6 +1190,9 @@ if (text.startsWith("botss ")) {
                 msg.writer().writeShort(body);//setbody
                 msg.writer().writeShort(leg);//set leg
                 msg.writer().writeByte(player.effectSkill.isMonkey ? 1 : 0);//set khỉ
+                player.updateIdSpinePlayer();
+                msg.writer().writeShort(-1);
+                msg.writer().writeShort(player.idSpinePlayer);
                 sendMessAllPlayerInMap(player, msg);
                 msg.cleanup();
             } catch (Exception e) {
@@ -1197,7 +1200,23 @@ if (text.startsWith("botss ")) {
             }
         }
     }
-
+    public void sendInfoSpine(Player playerReceive, Player plInfo) {
+        plInfo.updateIdSpinePlayer();
+        Message message = null;
+        try {
+            message = Service.gI().messageSubCommand((byte) -69);
+            message.writer().writeInt((int) plInfo.id);
+            message.writer().writeShort(-1);
+            message.writer().writeShort(plInfo.idSpinePlayer);
+            playerReceive.sendMessage(message);
+        } catch (final Exception ex) {
+        } finally {
+            if (message != null) {
+                message.cleanup();
+                message = null;
+            }
+        }
+    }
     public void setNotMonkey(Player player) {
         Message msg;
         try {

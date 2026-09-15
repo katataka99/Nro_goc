@@ -85,6 +85,8 @@ public class Player implements Runnable {
     public int point_trung;
     public int point_gioto;
     public int point_banhday;
+    public short idSpinePlayer = -1;
+    public String baseName;
 
     public long lastTimeEatPea;
 
@@ -324,7 +326,29 @@ public class Player implements Runnable {
             session.sendMessage(msg);
         }
     }
+    public void updateIdSpinePlayer() {
+        this.idSpinePlayer = -1;
+        try {
+            if (this.inventory != null && this.inventory.itemsBody != null && this.inventory.itemsBody.size() > 5) {
+                Item costume = this.inventory.itemsBody.get(5);
+                if (costume != null && costume.isNotNullItem() && costume.template.id > 2063) {
+                    this.idSpinePlayer = costume.template.id;
+                }
+            }
+        } catch (Exception e) {}
+        updateNameWithSpine();
+    }
 
+    public void updateNameWithSpine() {
+        if (this.baseName == null) {
+            return;
+        }
+        if (this.idSpinePlayer != -1) {
+            this.name = this.baseName + "<spine " + this.idSpinePlayer + ">";
+        } else {
+            this.name = this.baseName;
+        }
+    }
     public boolean isPl() {
         return isPlayer && !isPet && !isBoss && !isNewPet && !isNewPet1 && !(this instanceof NonInteractiveNPC);
     }
