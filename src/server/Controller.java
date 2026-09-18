@@ -202,10 +202,10 @@ public class Controller implements IMessageHandler {
                         }
                     }
                     break;
-//                case 42:
-//                    // Đăng ký tài khoản nhanh
-//                    Service.gI().regisAccount(_session, _msg);
-//                    break;
+                case 42:
+                    // Đăng ký tài khoản nhanh từ màn hình mở bằng nút "Chơi mới".
+                    Service.gI().regisAccount(_session, _msg);
+                    break;
                 case -127:
                     if (player != null) {
                         LuckyRound.gI().readOpenBall(player, _msg);
@@ -913,7 +913,6 @@ public class Controller implements IMessageHandler {
 
     public void login2(MySession session, Message msg) {
         Service.gI().switchToRegisterScr(session);
-        Service.gI().sendThongBaoOK(session, "Vui lòng đăng ký tài khoản tại:\n https://ngocrongsocap.com/");
     }
 
     public void sendInfo(MySession session) {

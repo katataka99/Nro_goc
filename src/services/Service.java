@@ -391,15 +391,33 @@ public class Service {
 
     public void regisAccount(Session session, Message _msg) {
         try {
-            _msg.readUTF();
-            _msg.readUTF();
-            _msg.readUTF();
-            _msg.readUTF();
-            _msg.readUTF();
-            _msg.readUTF();
-            _msg.readUTF();
-            String user = _msg.readUTF();
-            String pass = _msg.readUTF();
+            String[] fields = new String[9];
+            for (int i = 0; i < fields.length; i++) {
+                fields[i] = _msg.readUTF();
+            }
+
+            // Ưu tiên hai ô được dùng làm tài khoản/mật khẩu trên giao diện.
+            String user = fields[1];
+            String pass = fields[5];
+
+            // Một số bản client gửi các ô theo thứ tự khác với thứ tự hiển thị.
+            // Khi đó, chọn ô có chữ phù hợp làm tài khoản để vẫn đăng ký được.
+            if (!isValidAccountLength(user)) {
+                for (String field : fields) {
+                    if (isValidAccountLength(field) && containsLetter(field)) {
+                        user = field;
+                        break;
+                    }
+                }
+            }
+            if (!isValidPasswordLength(pass)) {
+                for (String field : fields) {
+                    if (field != null && !field.equals(user) && isValidPasswordLength(field)) {
+                        pass = field;
+                        break;
+                    }
+                }
+            }
 
             if (user == null || user.isEmpty()) {
                 sendThongBaoOK((MySession) session, "Vui lòng nhập tài khoản");
@@ -410,11 +428,11 @@ public class Service {
                 return;
             }
 
-            if (!(user.length() >= 4 && user.length() <= 18)) {
+            if (!isValidAccountLength(user)) {
                 sendThongBaoOK((MySession) session, "Tài khoản phải có độ dài 4-18 ký tự");
                 return;
             }
-            if (!(pass.length() >= 6 && pass.length() <= 18)) {
+            if (!isValidPasswordLength(pass)) {
                 sendThongBaoOK((MySession) session, "Mật khẩu phải có độ dài 6-18 ký tự");
                 return;
             }
@@ -430,6 +448,18 @@ public class Service {
         } catch (Exception e) {
             sendThongBaoOK((MySession) session, "Đã xảy ra lỗi bất ngờ vui lòng thử lại sau!");
         }
+    }
+
+    private boolean isValidAccountLength(String value) {
+        return value != null && value.length() >= 4 && value.length() <= 18;
+    }
+
+    private boolean isValidPasswordLength(String value) {
+        return value != null && value.length() >= 6 && value.length() <= 18;
+    }
+
+    private boolean containsLetter(String value) {
+        return value.chars().anyMatch(Character::isLetter);
     }
 
     public void Send_Info_NV(Player pl) {
